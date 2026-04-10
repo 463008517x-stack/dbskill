@@ -1,0 +1,17 @@
+name: 我的第一个自动打工人
+
+# 触发条件：什么时候开始干活？
+on:
+  push: # 只要有人往云端推送（Push）了新文件，就立刻触发！
+
+# 执行任务：干什么活？
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest # 给这个打工人分配一台免费的 Linux 虚拟电脑
+    
+    steps:
+      - name: 第一步：向老板问好
+        run: echo "老板好！我是你的自动打工人，我已经收到你的最新推送了！"
+        
+      - name: 第二步：汇报系统时间
+        run: date
