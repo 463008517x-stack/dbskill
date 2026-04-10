@@ -1,0 +1,30 @@
+name: 每日A股早报机器人
+
+# 触发条件：定时触发 (Cron)
+on:
+  schedule:
+    # 这里的语法是：分钟 小时 日 月 星期。
+    # 注意：GitHub 服务器使用国际标准时间 (UTC)。北京时间早上 8 点，等于 UTC 时间凌晨 0 点。
+    - cron: '0 0 * * 1-5' # 设定为每周一到周五（1-5）的早上 8 点运行
+
+jobs:
+  analyze-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码库
+        uses: actions/checkout@v3
+        
+      - name: 配置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: 安装需要的库
+        run: pip install requests beautifulsoup4 openai
+        
+      - name: 运行新闻抓取与分析脚本
+        # 这一步是让服务器去执行你写好的 Python 代码，并传入你的大模型密钥
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }} # 保护你的密钥不被泄露
+        run: python get_a_share_news.py
